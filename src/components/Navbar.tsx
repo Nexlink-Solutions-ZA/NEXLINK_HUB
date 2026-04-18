@@ -14,7 +14,7 @@ export function Navbar() {
   // Handle scroll for sticky header appearance
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -34,8 +34,8 @@ export function Navbar() {
       <header 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled 
-            ? "bg-white/60 dark:bg-black/60 backdrop-blur-xl border-b border-black/5 dark:border-white/10 py-3" 
-            : "bg-transparent py-4 lg:py-8"
+            ? "bg-white/70 dark:bg-black/70 backdrop-blur-[15px] border-b border-black/[0.08] dark:border-white/[0.08] py-4 shadow-sm" 
+            : "bg-transparent py-4 lg:py-10"
         }`}
       >
         <div className="max-w-[1400px] mx-auto px-6 flex items-center justify-between w-full">

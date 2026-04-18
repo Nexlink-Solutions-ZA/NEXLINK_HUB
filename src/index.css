@@ -65,9 +65,37 @@
   100% { transform: translate(-20px, 40px); opacity: 0; }
 }
 
-@keyframes shine-sweep {
-  0% { transform: translateX(-150%) skewX(-20deg); }
-  20%, 100% { transform: translateX(250%) skewX(-20deg); }
+@keyframes glass-sweep {
+  0% { transform: translateX(-150%) skewX(-20deg); opacity: 0; }
+  20% { opacity: 0.5; }
+  50% { opacity: 0.5; }
+  80% { opacity: 0; }
+  100% { transform: translateX(250%) skewX(-20deg); opacity: 0; }
+}
+
+@keyframes float-wiggle {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  25% { transform: rotate(-8deg) translateY(-2px); }
+  50% { transform: rotate(0deg) translateY(0); }
+  75% { transform: rotate(8deg) translateY(-2px); }
+}
+
+.animate-glass-sweep {
+  animation: glass-sweep 8s infinite ease-in-out;
+}
+
+.group-hover\:animate-float-wiggle:hover {
+  animation: float-wiggle 1s ease-in-out infinite;
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(100px, -50px) scale(1.1); }
+  66% { transform: translate(-50px, 100px) scale(0.9); }
+}
+
+.animate-drift {
+  animation: drift 20s infinite ease-in-out;
 }
 
 @keyframes inner-scroll {
