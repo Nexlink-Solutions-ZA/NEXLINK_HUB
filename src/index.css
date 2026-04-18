@@ -1,0 +1,162 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* User requested deep #3419e0 purple */
+  --color-purple-500: #4b31f0;
+  --color-purple-600: #3419e0;
+  --color-purple-700: #240ea3;
+  --font-inter: "Inter Variable", "Inter", sans-serif;
+}
+
+@layer components {
+  /* Hide scrollbar for the dashboard mockup */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  
+  /* High-end cinematic texture */
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0.15;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+}
+
+@layer utilities {
+  .selection-purple::selection {
+    background-color: rgb(52 25 224 / 0.5); /* #3419e0 */
+    color: white;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-30px, 30px); }
+}
+
+@keyframes float-reverse {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, -30px); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.02); }
+}
+
+@keyframes chat-bounce {
+  0% { opacity: 0; transform: translateY(10px) scale(0.95); }
+  70% { opacity: 1; transform: translateY(-2px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes ghost-move {
+  0% { transform: translate(100px, 100px); opacity: 0; }
+  20% { opacity: 1; }
+  50% { transform: translate(0, 0); opacity: 1; }
+  60% { transform: translate(0, 0) scale(0.85); opacity: 1; }
+  70% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(-20px, 40px); opacity: 0; }
+}
+
+@keyframes shine-sweep {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  20%, 100% { transform: translateX(250%) skewX(-20deg); }
+}
+
+@keyframes inner-scroll {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-100px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes background-flow {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-background-flow {
+  background-size: 200% 100%;
+  animation: background-flow 60s linear infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 8s infinite ease-in-out;
+}
+
+.animate-chat-bounce {
+  animation: chat-bounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-ghost {
+  animation: ghost-move 4s infinite ease-in-out;
+}
+
+.animate-shine {
+  animation: shine-sweep 5s infinite ease-in-out;
+}
+
+.animate-inner-scroll {
+  animation: inner-scroll 12s infinite ease-in-out;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.animate-flicker {
+  animation: flicker 2s infinite ease-in-out;
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 15s infinite ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+body {
+  scroll-behavior: smooth;
+  font-family: var(--font-inter), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fluid weight transition on hover */
+.hover-weight:hover {
+  font-variation-settings: "wght" 600;
+}
+
+@import url('https://rsms.me/inter/inter.css');
