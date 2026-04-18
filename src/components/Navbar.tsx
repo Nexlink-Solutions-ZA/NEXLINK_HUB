@@ -75,6 +75,8 @@ export function Navbar() {
             <div className="w-1 h-1 bg-black/10 dark:bg-white/10 rounded-full" />
             <Link to="/features" className="text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition duration-200 hover-weight">Features</Link>
             <div className="w-1 h-1 bg-black/10 dark:bg-white/10 rounded-full" />
+            <Link to="/audit" className="text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition duration-200 hover-weight">Audit</Link>
+            <div className="w-1 h-1 bg-black/10 dark:bg-white/10 rounded-full" />
             <Link to="/integrations" className="text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition duration-200 hover-weight">Integrations</Link>
             <div className="w-1 h-1 bg-black/10 dark:bg-white/10 rounded-full" />
             <Link to="/pricing" className="text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition duration-200 hover-weight">Pricing</Link>
@@ -182,6 +184,7 @@ export function Navbar() {
                   {[
                     { label: "About", to: "/about" },
                     { label: "Features", to: "/features" },
+                    { label: "Audit", to: "/audit" },
                     { label: "Integrations", to: "/integrations" },
                     { label: "Pricing", to: "/pricing" },
                     { label: "Contact", to: "/contact" }

@@ -53,12 +53,12 @@ export function Hero() {
               className="flex flex-wrap items-center gap-6"
             >
               <ModernButton 
-                to="/features" 
+                onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })} 
                 variant="primary"
-                ariaLabel="Browse available website designs"
+                ariaLabel="Browse our modern design portfolio"
               >
                 Browse Designs
-                <Icon icon="solar:arrow-right-linear" width="20" height="20" />
+                <Icon icon="solar:gallery-linear" width="20" height="20" />
               </ModernButton>
               <ModernButton 
                 to="/pricing" 

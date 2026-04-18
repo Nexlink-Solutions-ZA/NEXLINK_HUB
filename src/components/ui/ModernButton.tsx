@@ -2,6 +2,8 @@ import { motion, useMotionTemplate, useMotionValue } from "motion/react";
 import { type ReactNode, type MouseEvent } from "react";
 import { Link } from "react-router-dom";
 
+const MotionLink = motion(Link);
+
 interface ModernButtonProps {
   children: ReactNode;
   onClick?: () => void;
@@ -79,10 +81,9 @@ export function ModernButton({
 
   if (to) {
     return (
-      <Link to={to} {...(motionProps as any)}>
-        <motion.div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: variant === "primary" ? darkBackground : background }} />
-        <span className="relative z-10">{children}</span>
-      </Link>
+      <MotionLink to={to} {...(motionProps as any)}>
+        {content}
+      </MotionLink>
     );
   }
 

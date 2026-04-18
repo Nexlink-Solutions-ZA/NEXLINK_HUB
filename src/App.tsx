@@ -17,6 +17,7 @@ import { IntegrationsPage } from "./pages/IntegrationsPage";
 import { ContactPage } from "./pages/ContactPage";
 import { TermsPage, PrivacyPage } from "./pages/LegalPages";
 import { DocumentationPage, BlogPage, CommunityPage, HelpCenterPage } from "./pages/ResourcePages";
+import { AuditPage } from "./pages/AuditPage";
 import { ScrollToTop } from "./components/ui/ScrollToTop";
 
 export default function App() {
@@ -36,6 +37,7 @@ export default function App() {
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/changelog" element={<ChangelogPage />} />
               <Route path="/integrations" element={<IntegrationsPage />} />
+              <Route path="/audit" element={<AuditPage />} />
               <Route path="/documentation" element={<DocumentationPage />} />
               <Route path="/blog" element={<BlogPage />} />
               <Route path="/community" element={<CommunityPage />} />

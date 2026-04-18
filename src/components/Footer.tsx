@@ -97,6 +97,14 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  to="/audit"
+                  className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white text-sm transition"
+                >
+                  Audit Tool
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/pricing"
                   className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white text-sm transition"
                 >
