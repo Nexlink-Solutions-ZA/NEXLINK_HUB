@@ -33,6 +33,21 @@
     background-color: rgb(52 25 224 / 0.5); /* #3419e0 */
     color: white;
   }
+
+  .animate-grid-scan {
+    animation: grid-scan 4s linear infinite;
+  }
+}
+
+@keyframes grid-scan {
+  0% { background-position: 0 0; }
+  100% { background-position: 32px 32px; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { opacity: 0.1; }
+  100% { transform: scale(1.5); opacity: 0; }
 }
 
 @keyframes float {

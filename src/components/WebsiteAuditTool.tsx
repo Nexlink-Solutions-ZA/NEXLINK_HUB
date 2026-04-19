@@ -25,6 +25,7 @@ export function WebsiteAuditTool() {
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   const [result, setResult] = useState<AuditResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const steps = [
     "Initializing Audit Engine...",
@@ -34,9 +35,27 @@ export function WebsiteAuditTool() {
     "Generating Improvement Roadmap..."
   ];
 
+  const validateUrl = (string: string) => {
+    try {
+      new URL(string);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  };
+
   const handleAudit = (e: FormEvent) => {
     e.preventDefault();
-    if (!url || isAuditing) return;
+    setError(null);
+
+    if (!url) return;
+
+    if (!validateUrl(url)) {
+      setError("Please enter a valid URL (including https://)");
+      return;
+    }
+
+    if (isAuditing) return;
 
     setIsAuditing(true);
     setResult(null);
@@ -47,6 +66,15 @@ export function WebsiteAuditTool() {
     let currentProgress = 0;
     const interval = setInterval(() => {
       currentProgress += Math.random() * 15;
+      
+      // Artificial Failure Simulation (e.g. 5% chance of engine timeout)
+      if (currentProgress > 40 && Math.random() < 0.02) {
+        clearInterval(interval);
+        setError("Audit engine timeout: The target server is unresponsive. Please try again later.");
+        setIsAuditing(false);
+        return;
+      }
+
       if (currentProgress >= 100) {
         currentProgress = 100;
         clearInterval(interval);
@@ -115,7 +143,11 @@ export function WebsiteAuditTool() {
               required
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              className="w-full bg-white dark:bg-neutral-900 border-2 border-black/5 dark:border-white/5 rounded-[2rem] px-8 py-6 text-xl outline-none focus:border-purple-600 dark:focus:border-purple-500 transition-all duration-500 shadow-xl shadow-purple-900/[0.02] placeholder:text-neutral-400 font-medium"
+              className={`w-full bg-white dark:bg-neutral-900 border-2 rounded-[2rem] px-8 py-6 text-xl outline-none transition-all duration-500 shadow-xl shadow-purple-900/[0.02] placeholder:text-neutral-400 font-medium ${
+                error 
+                  ? "border-rose-500/50 focus:border-rose-500" 
+                  : "border-black/5 dark:border-white/5 focus:border-purple-600 dark:focus:border-purple-500"
+              }`}
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
               <ModernButton 
@@ -130,6 +162,20 @@ export function WebsiteAuditTool() {
           {/* Ambient Glow on focus */}
           <div className="absolute -inset-1 bg-purple-600/20 blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-700 -z-10 rounded-[2.5rem]" />
         </form>
+
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10, filter: "blur(10px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -10, filter: "blur(10px)" }}
+              className="mt-6 inline-flex items-center gap-2 bg-rose-500/10 border border-rose-500/20 px-6 py-3 rounded-full text-rose-600 dark:text-rose-400 font-medium text-sm"
+            >
+              <Icon icon="solar:danger-triangle-linear" width="18" height="18" className="shrink-0" />
+              {error}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
 
       <AnimatePresence mode="wait">
@@ -142,8 +188,28 @@ export function WebsiteAuditTool() {
             className="bg-white/40 backdrop-blur-3xl border border-black/5 rounded-[3rem] p-12 dark:bg-neutral-900/30 dark:border-white/5 relative overflow-hidden"
           >
             {/* Analyzing Grid Visual */}
-            <div className="absolute inset-0 z-0 opacity-10">
-               <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(circle, #4b31f0 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+            <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+               <div 
+                 className="w-full h-full animate-grid-scan" 
+                 style={{ 
+                   backgroundImage: 'radial-gradient(circle, #4b31f0 1.5px, transparent 1px)', 
+                   backgroundSize: '32px 32px' 
+                 }} 
+               />
+               
+               {/* Sonar Pulsing Rings */}
+               <div className="absolute inset-0 flex items-center justify-center">
+                 {[...Array(3)].map((_, i) => (
+                   <div 
+                     key={i}
+                     className="absolute w-[500px] h-[500px] border border-purple-500 rounded-full"
+                     style={{ 
+                       animation: `pulse-ring 3s cubic-bezier(0.21, 0.61, 0.35, 1) ${i * 1}s infinite`,
+                       opacity: 0
+                     }}
+                   />
+                 ))}
+               </div>
             </div>
 
             <div className="relative z-10 flex flex-col items-center text-center">
@@ -240,30 +306,51 @@ export function WebsiteAuditTool() {
                 { label: "SEO Score", value: result.metrics.seo, icon: "solar:document-text-linear", color: "text-blue-500" },
                 { label: "Mobile Readiness", value: result.metrics.mobile, icon: "solar:smartphone-linear", color: "text-purple-500" },
                 { label: "Accessibility", value: result.metrics.accessibility, icon: "solar:users-group-rounded-linear", color: "text-amber-500" }
-              ].map((metric) => (
-                <div 
-                  key={metric.label}
-                  className="bg-white/40 backdrop-blur-xl border border-black/5 rounded-[2.5rem] p-8 dark:bg-neutral-900/30 dark:border-white/5 group hover:border-purple-500/30 transition-all duration-500 shadow-sm"
-                >
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="p-3 bg-neutral-50 dark:bg-black/40 rounded-2xl group-hover:bg-purple-600 group-hover:text-white transition-colors duration-500">
-                      <Icon icon={metric.icon} width="24" height="24" />
+              ].map((metric) => {
+                const isHigh = metric.value > 85;
+                const isLow = metric.value < 70;
+                
+                return (
+                  <div 
+                    key={metric.label}
+                    className="bg-white/40 backdrop-blur-xl border border-black/5 rounded-[2.5rem] p-8 dark:bg-neutral-900/30 dark:border-white/5 group hover:border-purple-500/30 transition-all duration-500 shadow-sm"
+                  >
+                    <div className="flex justify-between items-start mb-6">
+                      <motion.div 
+                        animate={isHigh ? {
+                          y: [0, -4, 0],
+                        } : isLow ? {
+                          x: [0, -2, 2, -2, 2, 0],
+                          rotate: [0, -5, 5, -5, 5, 0]
+                        } : {
+                          scale: [1, 1.05, 1],
+                        }}
+                        transition={{
+                          duration: isLow ? 0.4 : 3,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          repeatDelay: isLow ? 2 : 0
+                        }}
+                        className="p-3 bg-neutral-50 dark:bg-black/40 rounded-2xl group-hover:bg-purple-600 group-hover:text-white transition-colors duration-500"
+                      >
+                        <Icon icon={metric.icon} width="24" height="24" />
+                      </motion.div>
+                      <span className={`text-3xl font-black ${metric.value > 85 ? 'text-emerald-500' : metric.value > 70 ? 'text-amber-500' : 'text-rose-500'}`}>
+                        {metric.value}
+                      </span>
                     </div>
-                    <span className={`text-3xl font-black ${metric.value > 85 ? 'text-emerald-500' : metric.value > 70 ? 'text-amber-500' : 'text-rose-500'}`}>
-                      {metric.value}
-                    </span>
+                    <h4 className="text-neutral-900 font-bold text-lg mb-1 dark:text-white">{metric.label}</h4>
+                    <div className="w-full h-1.5 bg-black/5 dark:bg-white/5 rounded-full mt-4 overflow-hidden">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${metric.value}%` }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
+                        className={`h-full bg-current ${metric.color}`}
+                      />
+                    </div>
                   </div>
-                  <h4 className="text-neutral-900 font-bold text-lg mb-1 dark:text-white">{metric.label}</h4>
-                  <div className="w-full h-1.5 bg-black/5 dark:bg-white/5 rounded-full mt-4 overflow-hidden">
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      animate={{ width: `${metric.value}%` }}
-                      transition={{ duration: 1.5, ease: "easeOut" }}
-                      className={`h-full bg-current ${metric.color}`}
-                    />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Suggestions & Roadmap */}
