@@ -149,8 +149,7 @@ export function Hero() {
                   {[
                     { label: "Design Audit", status: "Complete", color: "bg-purple-500", progress: "w-full" },
                     { label: "UX Research", status: "Complete", color: "bg-purple-500", progress: "w-full" },
-                    { label: "Visual System", status: "In Progress", color: "bg-indigo-500", progress: "w-[75%]" },
-                    { label: "Development", status: "Pending", color: "bg-neutral-300", progress: "w-0" }
+                    { label: "Visual System", status: "In Progress", color: "bg-indigo-500", progress: "w-[75%]" }
                   ].map((item, i) => (
                     <motion.div 
                       key={i} 
@@ -171,6 +170,21 @@ export function Hero() {
                       </div>
                     </motion.div>
                   ))}
+                  <motion.button
+                    variants={phoneProjectVariants}
+                    whileHover={{ 
+                      scale: 1.03, 
+                      boxShadow: "0 0 30px rgba(147, 51, 234, 0.6)",
+                      transition: { duration: 0.2 }
+                    }}
+                    whileTap={{ 
+                      scale: 0.95,
+                      transition: { duration: 0.1 }
+                    }}
+                    className="w-full py-4 mt-4 rounded-2xl bg-purple-600 text-white text-[11px] font-bold uppercase tracking-[0.25em] pointer-events-auto transition-shadow shadow-2xl shadow-purple-600/30 active:scale-95"
+                  >
+                    Review Designs
+                  </motion.button>
                 </motion.div>
                 
                 {/* Overlay Chat Pop-up with Elastic Bounce */}

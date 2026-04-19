@@ -78,13 +78,27 @@ export function WebsiteAuditTool() {
     }, 400);
   };
 
+  const downloadAuditReport = () => {
+    if (!result) return;
+    const data = JSON.stringify(result, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `nexlink_audit_${result.url.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${Date.now()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  };
+
   return (
-    <div className="w-full max-w-5xl mx-auto py-12 px-6">
+    <div className="w-full max-w-5xl mx-auto py-12 px-6 audit-result-container">
       {/* Search Input Area */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-16 text-center"
+        className="mb-16 text-center audit-input-area"
       >
         <h2 className="text-4xl md:text-5xl font-medium tracking-tight text-neutral-900 mb-6 dark:text-white">
           Studio Audit Tool
@@ -191,12 +205,32 @@ export function WebsiteAuditTool() {
             className="space-y-10"
           >
             {/* Headline Result */}
-            <div className="flex flex-col md:flex-row justify-between items-baseline gap-4 border-b border-black/5 dark:border-white/5 pb-8">
-               <div>
-                  <h3 className="text-2xl font-bold dark:text-white">Audit Result</h3>
-                  <p className="text-neutral-500 font-mono text-sm">{result.url}</p>
+            <div className="flex flex-col md:flex-row justify-between items-baseline md:items-center gap-6 border-b border-black/5 dark:border-white/5 pb-8">
+               <div className="flex-1">
+                  <h3 className="text-2xl font-bold dark:text-white mb-1">Audit Result</h3>
+                  <p className="text-neutral-500 font-mono text-sm break-all">{result.url}</p>
                </div>
-               <span className="text-neutral-400 text-sm font-medium">Analysis Completed: {result.timestamp}</span>
+               <div className="flex flex-wrap items-center gap-4 w-full md:w-auto no-print">
+                  <span className="text-neutral-400 text-sm font-medium mr-auto md:mr-0">Analysis Completed: {result.timestamp}</span>
+                  <div className="flex items-center gap-3">
+                    <ModernButton 
+                      onClick={downloadAuditReport} 
+                      variant="secondary" 
+                      className="!px-6 !py-2.5 !text-sm group flex items-center gap-2"
+                    >
+                      <Icon icon="solar:download-minimalistic-linear" width="18" height="18" className="group-hover:translate-y-0.5 transition-transform" />
+                      JSON
+                    </ModernButton>
+                    <ModernButton 
+                      onClick={() => window.print()} 
+                      variant="secondary" 
+                      className="!px-6 !py-2.5 !text-sm group flex items-center gap-2"
+                    >
+                      <Icon icon="solar:printer-minimalistic-linear" width="18" height="18" className="group-hover:scale-110 transition-transform" />
+                      Print
+                    </ModernButton>
+                  </div>
+               </div>
             </div>
 
             {/* Metrics Grid */}
